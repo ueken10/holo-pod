@@ -1,0 +1,10 @@
+<article class="dashboard terminal-view">
+  <div class="dashboard-topline"><div><p class="dashboard-kicker">/usr/bin/weather-status</p><h1 class="dashboard-title">SYSTEM TELEMETRY</h1></div><span x-text="timezone"></span></div>
+  <section class="dashboard-clock-block" aria-label="現在日時"><p class="dashboard-kicker">[ SYSTEM TIME ]</p><p class="clock-value" x-text="currentTime"></p><p class="date-value" x-text="currentDate"></p></section>
+  <section class="weather-grid" aria-label="現在の天気">
+    <div class="weather-card"><span class="weather-card-label">CONDITION</span><strong class="weather-card-value"><span class="weather-icon" x-text="weather.icon"></span><span x-text="weather.description"></span></strong></div>
+    <div class="weather-card"><span class="weather-card-label">TEMPERATURE</span><strong class="weather-card-value" x-text="weather.temperature"></strong></div>
+    <div class="weather-card"><span class="weather-card-label">PRECIP / HUMIDITY</span><strong class="weather-card-value"><span x-text="weather.precipitation"></span> / <span x-text="weather.humidity"></span></strong><span class="weather-card-label">RAIN PROB <span x-text="weather.probability"></span></span></div>
+  </section>
+  <div class="weather-status"><span x-text="weather.loading ? '> fetching telemetry…' : (weather.error || (weather.updatedAt ? '> synchronized at ' + weather.updatedAt : '> waiting for data'))" aria-live="polite"></span><button class="common-button" type="button" @click="fetchWeather()">再取得</button></div>
+</article>

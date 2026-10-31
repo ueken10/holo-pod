@@ -1,0 +1,16 @@
+<article class="dashboard simple-view grid font-sans">
+  <div class="dashboard-topline">
+    <div><p class="dashboard-kicker">AMBIENT DISPLAY / 01</p><h1 class="dashboard-title text-white">今日の空模様</h1></div>
+    <span x-text="timezone"></span>
+  </div>
+  <section class="dashboard-clock-block" aria-label="現在日時">
+    <p class="clock-value" x-text="currentTime"></p>
+    <p class="date-value" x-text="currentDate"></p>
+  </section>
+  <section class="weather-grid" aria-label="現在の天気">
+    <div class="weather-card"><span class="weather-card-label">WEATHER</span><strong class="weather-card-value"><span class="weather-icon" x-text="weather.icon"></span><span x-text="weather.description"></span></strong></div>
+    <div class="weather-card"><span class="weather-card-label">TEMPERATURE</span><strong class="weather-card-value" x-text="weather.temperature"></strong></div>
+    <div class="weather-card"><span class="weather-card-label">HUMIDITY / RAIN</span><strong class="weather-card-value"><span x-text="weather.humidity"></span> · <span x-text="weather.probability"></span></strong></div>
+  </section>
+  <div class="weather-status"><span x-text="weather.loading ? '天気データを更新中…' : (weather.error || (weather.updatedAt ? '最終更新 ' + weather.updatedAt : ''))" aria-live="polite"></span><button class="common-button" type="button" @click="fetchWeather()">天気を更新</button></div>
+</article>

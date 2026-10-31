@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10131c">
+  <meta name="description" content="複数のテーマで時刻と天気を表示するスマートディスプレイSPA">
+  <title>Holo Pod</title>
+  <link rel="stylesheet" href="./css/app.css">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://api.open-meteo.com" crossorigin>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.167.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.167.0/examples/jsm/",
+        "@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3.0.0/lib/three-vrm.module.js",
+        "@pixiv/three-vrm-animation": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm-animation@3.0.0/lib/three-vrm-animation.module.js"
+      }
+    }
+  </script>
+  <style id="page-theme-import"></style>
+  <script defer src="https://cdn.jsdelivr.net/npm/pinecone-router@4.2.0/dist/router.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@unocss/runtime@0.62.4"></script>
+  <script defer src="./js/asset-policy.js"></script>
+  <script defer src="./js/app.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"></script>
+</head>
+<body x-data="appShell" @keydown.window="handleKeydown($event)">
+  <header class="app-header">
+    <a class="brand" href="#/simple" aria-label="Holo Pod ホーム">
+      <span class="brand-mark" aria-hidden="true">◈</span>
+      <span>HOLO POD</span>
+    </a>
+    <div class="header-actions">
+      <span class="current-page-label" x-text="currentTitle" aria-live="polite"></span>
+      <button class="menu-toggle" type="button" @click="toggleMenu()" :aria-expanded="menuOpen.toString()" aria-controls="page-menu" aria-label="ページメニューを開閉">
+        <span aria-hidden="true">≡</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <main class="page-frame" :data-theme="activeTheme">
+      <div class="page-loading" x-show="loading" x-cloak role="status">ページを読み込み中…</div>
+      <div class="page-error" x-show="errorMessage" x-cloak role="alert">
+        <p x-text="errorMessage"></p>
+        <button class="common-button" type="button" @click="retry()">再読み込み</button>
+      </div>
+      <section id="app" class="page-content" aria-live="polite" :aria-busy="loading.toString()" x-html="pageContent"></section>
+    </main>
+  </div>
+
+  <div class="menu-backdrop" x-show="menuOpen" x-cloak @click.self="closeMenu()" @keydown.escape.window="closeMenu()">
+    <nav id="page-menu" class="page-menu" aria-label="ページ" x-show="menuOpen" x-transition>
+      <div class="menu-heading">
+        <p class="eyebrow">NAVIGATION</p>
+        <h2>ページを選択</h2>
+      </div>
+      <ul>
+        <template x-for="(page, index) in pages" :key="page.path">
+          <li>
+            <a :href="'#' + page.path" @click="selectPage(index)" :class="{ 'is-selected': selectedIndex === index }" :aria-current="currentPath === page.path ? 'page' : null">
+              <span class="menu-index" x-text="String(index + 1).padStart(2, '0')"></span>
+              <span x-text="page.title"></span>
+              <span class="menu-current" x-show="currentPath === page.path" aria-label="現在のページ">●</span>
+            </a>
+          </li>
+        </template>
+      </ul>
+      <p class="menu-help">↑ ↓ 選択　≡ 決定　Esc 閉じる</p>
+    </nav>
+  </div>
+
+  <div class="router-definitions" x-router x-hash aria-hidden="true">
+    <template x-route="/simple" x-handler="routeSimple"></template>
+    <template x-route="/game" x-handler="routeGame"></template>
+    <template x-route="/rpg" x-handler="routeRpg"></template>
+    <template x-route="/terminal" x-handler="routeTerminal"></template>
+    <template x-route="/tsukuyomi" x-handler="routeTsukuyomi"></template>
+    <template x-route="/settings" x-handler="routeSettings"></template>
+    <template x-route="notfound" x-handler="showNotFound"></template>
+  </div>
+</body>
+</html>

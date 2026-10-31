@@ -1,0 +1,10 @@
+<article class="dashboard rpg-view rpgui-content">
+  <div class="dashboard-topline"><div><p class="dashboard-kicker">ADVENTURER'S STATUS</p><h1 class="dashboard-title">冒険の書 / 天候</h1></div><span x-text="timezone"></span></div>
+  <section class="dashboard-clock-block" aria-label="現在日時"><p class="clock-value" x-text="currentTime"></p><p class="date-value" x-text="currentDate"></p></section>
+  <section class="weather-grid" aria-label="現在の天気">
+    <div class="weather-card rpgui-container framed-golden"><span class="weather-card-label">フィールド天候</span><strong class="weather-card-value"><span class="weather-icon" x-text="weather.icon"></span><span x-text="weather.description"></span></strong></div>
+    <div class="weather-card rpgui-container framed-golden"><span class="weather-card-label">気温</span><strong class="weather-card-value" x-text="weather.temperature"></strong></div>
+    <div class="weather-card rpgui-container framed-golden"><span class="weather-card-label">降水確率 / 湿度</span><strong class="weather-card-value"><span x-text="weather.probability"></span> / <span x-text="weather.humidity"></span></strong></div>
+  </section>
+  <div class="weather-status"><span x-text="weather.loading ? '天候を占っています…' : (weather.error || (weather.updatedAt ? '更新 ' + weather.updatedAt : ''))" aria-live="polite"></span><button class="common-button" type="button" @click="fetchWeather()">天候を再取得</button></div>
+</article>

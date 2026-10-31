@@ -1,0 +1,12 @@
+<section class="settings-panel">
+  <p class="dashboard-kicker">PREFERENCES</p>
+  <h1>表示設定</h1>
+  <p>時計・日付の表示に使うタイムゾーンを選択します。変更はダッシュボードと天気情報に即時反映されます。</p>
+  <label for="timezone-select">タイムゾーン
+    <select id="timezone-select" x-model="timezone" @change="saveTimezone()">
+      <template x-for="zone in timezones" :key="zone"><option :value="zone" x-text="zone"></option></template>
+    </select>
+  </label>
+  <p class="settings-saved" role="status" x-text="settingsMessage || '選択した設定はこのブラウザーに保存されます。'"></p>
+  <p>天気の観測地点は東京（35.6895, 139.6917）です。表示タイムゾーンとは独立しています。</p>
+</section>

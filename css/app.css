@@ -1,0 +1,573 @@
+@layer reset, framework, app;
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    min-block-size: 100%;
+    color-scheme: dark;
+    background: #10131c;
+  }
+
+  body {
+    min-block-size: 100vh;
+    min-block-size: 100svh;
+    margin: 0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.5;
+  }
+
+  button,
+  select {
+    font: inherit;
+  }
+
+  button,
+  a,
+  select {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer app {
+  :root {
+    --app-bg: #10131c;
+    --app-surface: #191e2a;
+    --app-surface-raised: #202737;
+    --app-text: #f3f5fa;
+    --app-muted: #a7b0c2;
+    --app-accent: #8b9cff;
+    --app-border: rgb(255 255 255 / 10%);
+    --app-radius: 1.25rem;
+    --app-gutter: clamp(1rem, 3vw, 2.5rem);
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-right: env(safe-area-inset-right, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-left: env(safe-area-inset-left, 0px);
+  }
+
+  [x-cloak] {
+    display: none !important;
+  }
+
+  body {
+    color: var(--app-text);
+    background:
+      radial-gradient(ellipse at 85% 5%, rgb(91 111 189 / 16%), transparent 34rem),
+      var(--app-bg);
+  }
+
+  button,
+  a,
+  select {
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 3px solid #aeb9ff;
+    outline-offset: 3px;
+  }
+
+  .app-header {
+    position: sticky;
+    z-index: 20;
+    inset-block-start: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-block-size: 4.5rem;
+    padding: 0.75rem calc(var(--app-gutter) + var(--safe-right)) 0.75rem calc(var(--app-gutter) + var(--safe-left));
+    border-block-end: 1px solid var(--app-border);
+    background: rgb(16 19 28 / 86%);
+    backdrop-filter: blur(18px);
+  }
+
+  .brand,
+  .header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .brand {
+    color: var(--app-text);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-decoration: none;
+  }
+
+  .brand-mark {
+    color: var(--app-accent);
+    font-size: 1.4rem;
+  }
+
+  .current-page-label {
+    color: var(--app-muted);
+    font-size: 0.9rem;
+  }
+
+  .menu-toggle,
+  .common-button {
+    display: inline-grid;
+    min-inline-size: 2.75rem;
+    min-block-size: 2.75rem;
+    place-items: center;
+    border: 1px solid var(--app-border);
+    border-radius: 0.85rem;
+    background: var(--app-surface-raised);
+    cursor: pointer;
+  }
+
+  .menu-toggle {
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+
+  .menu-toggle:hover,
+  .common-button:hover {
+    border-color: rgb(174 185 255 / 55%);
+    background: #2a3347;
+  }
+
+  .app-layout {
+    display: grid;
+    min-block-size: calc(100vh - 4.5rem);
+    min-block-size: calc(100svh - 4.5rem);
+    padding: var(--app-gutter) calc(var(--app-gutter) + var(--safe-right)) calc(var(--app-gutter) + var(--safe-bottom)) calc(var(--app-gutter) + var(--safe-left));
+  }
+
+  .page-frame {
+    position: relative;
+    inline-size: min(100%, 88rem);
+    min-block-size: 24rem;
+    margin-inline: auto;
+  }
+
+  .page-content {
+    min-block-size: inherit;
+  }
+
+  .page-loading,
+  .page-error {
+    position: fixed;
+    z-index: 10;
+    inset-inline: 50% auto;
+    inset-block-end: calc(1rem + var(--safe-bottom));
+    transform: translateX(-50%);
+    max-inline-size: min(90vw, 34rem);
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--app-border);
+    border-radius: 0.9rem;
+    background: #242b3a;
+    box-shadow: 0 1rem 3rem rgb(0 0 0 / 30%);
+  }
+
+  .page-error {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #ffd1d1;
+  }
+
+  .page-error p {
+    margin: 0;
+  }
+
+  .common-button {
+    padding-inline: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .menu-backdrop {
+    position: fixed;
+    z-index: 40;
+    inset: 0;
+    display: grid;
+    justify-items: end;
+    padding: calc(1rem + var(--safe-top)) calc(1rem + var(--safe-right)) calc(1rem + var(--safe-bottom)) calc(1rem + var(--safe-left));
+    background: rgb(4 7 13 / 68%);
+    backdrop-filter: blur(8px);
+  }
+
+  .page-menu {
+    inline-size: min(100%, 24rem);
+    max-block-size: 100%;
+    overflow: auto;
+    padding: clamp(1.25rem, 4vw, 2rem);
+    border: 1px solid var(--app-border);
+    border-radius: 1.5rem;
+    background: #171d29;
+    box-shadow: 0 2rem 6rem rgb(0 0 0 / 45%);
+  }
+
+  .menu-heading {
+    margin-block-end: 1.5rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.35rem;
+    color: var(--app-accent);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+  }
+
+  .menu-heading h2 {
+    margin: 0;
+    font-size: 1.35rem;
+  }
+
+  .page-menu ul {
+    display: grid;
+    gap: 0.45rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .page-menu a {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr auto;
+    align-items: center;
+    min-block-size: 3.25rem;
+    gap: 0.65rem;
+    padding: 0.65rem 0.8rem;
+    border: 1px solid transparent;
+    border-radius: 0.85rem;
+    color: var(--app-text);
+    text-decoration: none;
+  }
+
+  .page-menu a:hover,
+  .page-menu a.is-selected {
+    border-color: rgb(139 156 255 / 42%);
+    background: rgb(139 156 255 / 13%);
+  }
+
+  .menu-index,
+  .menu-help {
+    color: var(--app-muted);
+    font-size: 0.8rem;
+  }
+
+  .menu-current {
+    color: var(--app-accent);
+    font-size: 0.65rem;
+  }
+
+  .menu-help {
+    margin: 1.5rem 0 0;
+  }
+
+  .dashboard {
+    --theme-accent: #a9b5ff;
+    display: grid;
+    align-content: center;
+     gap: clamp(1rem, 2.5vw, 1.5rem);
+    min-block-size: min(72vh, 54rem);
+    min-block-size: min(72svh, 54rem);
+    padding: clamp(1.1rem, 4vw, 3rem);
+    overflow: hidden;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius);
+    background: linear-gradient(145deg, rgb(255 255 255 / 5%), transparent 55%), var(--app-surface);
+    box-shadow: 0 2rem 5rem rgb(0 0 0 / 20%);
+  }
+
+  .dashboard-topline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+     justify-content: space-between;
+    gap: 0.75rem;
+    color: var(--app-muted);
+  }
+
+  .dashboard-title {
+    margin: 0;
+    color: var(--app-text);
+    font-size: clamp(1.2rem, 2.4vw, 1.8rem);
+  }
+
+  .dashboard-kicker {
+    color: var(--theme-accent);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .clock-value {
+    margin: 0;
+    font-size: clamp(3rem, 13vw, 9.5rem);
+    font-variant-numeric: tabular-nums;
+    font-weight: 750;
+    letter-spacing: -0.07em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .date-value {
+    margin: 0.8rem 0 0;
+    color: var(--app-muted);
+    font-size: clamp(1rem, 2.2vw, 1.4rem);
+  }
+
+  .weather-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    gap: 0.8rem;
+  }
+
+  .weather-card {
+    min-inline-size: 0;
+    padding: clamp(1rem, 2.5vw, 1.4rem);
+    border: 1px solid var(--app-border);
+    border-radius: 1rem;
+    background: rgb(5 9 16 / 22%);
+  }
+
+  .weather-card-label {
+    display: block;
+    color: var(--app-muted);
+    font-size: 0.78rem;
+  }
+
+  .weather-card-value {
+    display: block;
+    margin-block-start: 0.4rem;
+    overflow-wrap: anywhere;
+    font-size: clamp(1.15rem, 2.5vw, 1.75rem);
+    font-weight: 700;
+  }
+
+  .weather-status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    color: var(--app-muted);
+    font-size: 0.85rem;
+  }
+
+  .weather-icon {
+    margin-inline-end: 0.4rem;
+    font-size: 1.35em;
+  }
+
+  .settings-panel {
+    display: grid;
+    align-content: center;
+    gap: 1rem;
+    max-inline-size: 48rem;
+    min-block-size: 60svh;
+    margin-inline: auto;
+    padding: clamp(1.25rem, 4vw, 3rem);
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius);
+    background: var(--app-surface);
+  }
+
+  .settings-panel h1 {
+    margin: 0;
+    font-size: clamp(1.6rem, 5vw, 2.5rem);
+  }
+
+  .settings-panel p {
+    color: var(--app-muted);
+  }
+
+  .settings-panel label {
+    display: grid;
+    gap: 0.55rem;
+    font-weight: 700;
+  }
+
+  .settings-panel select {
+    inline-size: 100%;
+    min-block-size: 3rem;
+    padding: 0.65rem 0.8rem;
+    border: 1px solid var(--app-border);
+    border-radius: 0.75rem;
+    background: #111722;
+  }
+
+  .settings-saved {
+    min-block-size: 1.5em;
+    color: #9de5bd;
+  }
+
+  .terminal-view {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  .terminal-view .clock-value {
+    color: #a3f7bf;
+    font-size: clamp(2.5rem, 10vw, 7rem);
+    letter-spacing: -0.04em;
+  }
+
+  .terminal-view.dashboard {
+    border-color: rgb(105 238 161 / 30%);
+    background: #07110e;
+    box-shadow: 0 0 4rem rgb(54 255 145 / 8%);
+  }
+
+  .terminal-view .weather-card {
+    border-radius: 0.25rem;
+    background: #0b1c16;
+  }
+
+  .game-view.dashboard {
+     --theme-accent: #ffce5c;
+    border: 3px solid #ffce5c;
+    border-radius: 0.5rem;
+    background: #18162c;
+    box-shadow: 0.5rem 0.5rem 0 #090a12;
+  }
+
+  .game-view .clock-value {
+    color: #fff1a8;
+    font-family: ui-monospace, monospace;
+    text-shadow: 0.08em 0.08em #7d4ca0;
+    }
+
+    .game-view .nes-container {
+      border-color: #f7d51d;
+      background: #12101f;
+      color: #fff;
+    }
+
+    .game-view button.nes-btn {
+      border: 3px solid #fff;
+      border-radius: 0;
+      background: #209cee;
+      box-shadow: inset -4px -4px #006bb3;
+      color: #fff;
+      font-family: ui-monospace, monospace;
+      font-weight: 800;
+      padding: 0.65rem 1rem;
+    }
+
+    .game-view button.nes-btn:hover {
+      background: #108de0;
+  }
+
+  .rpg-view.dashboard {
+    --theme-accent: #f2c879;
+    border: 2px solid #d5ab61;
+    background: linear-gradient(150deg, #42341e, #201a15 58%, #13151b);
+  }
+
+  .rpg-view .weather-card {
+    border-color: rgb(242 200 121 / 38%);
+    background: rgb(12 10 8 / 38%);
+  }
+
+  .rpg-view .clock-value {
+    color: #ffe6aa;
+    font-family: Georgia, "Yu Mincho", serif;
+  }
+
+  .rpg-view {
+    position: relative;
+    inline-size: 100%;
+    block-size: auto;
+    overflow: visible;
+  }
+
+  .rpg-view .rpgui-container {
+    position: relative;
+    z-index: auto;
+  }
+
+  .rpg-view * {
+    user-select: text;
+  }
+
+  .vrm-panel {
+    position: relative;
+    display: grid;
+    min-block-size: min(75svh, 52rem);
+    overflow: hidden;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius);
+    background: radial-gradient(ellipse at 50% 30%, #303b63, #10131c 72%);
+  }
+
+  .vrm-canvas {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .vrm-overlay {
+    position: relative;
+    z-index: 1;
+    align-self: end;
+    padding: clamp(1rem, 4vw, 2rem);
+    pointer-events: none;
+    background: linear-gradient(transparent, rgb(9 12 20 / 85%));
+  }
+
+  .vrm-overlay a,
+  .vrm-overlay button {
+    pointer-events: auto;
+  }
+
+  .vrm-status {
+    color: #e4e9ff;
+  }
+
+  .vrm-credit {
+    color: #c3cbe3;
+    font-size: 0.8rem;
+  }
+
+  .router-definitions {
+    display: none !important;
+  }
+
+  @media (width >= 58rem) {
+    .dashboard-clock-block {
+      padding-block: clamp(0rem, 4vh, 3rem);
+    }
+  }
+
+  @media (width <= 36rem) {
+    .current-page-label {
+      display: none;
+    }
+
+    .dashboard {
+      min-block-size: auto;
+    }
+
+    .clock-value {
+      font-size: clamp(2.65rem, 13vw, 4.5rem);
+    }
+
+    .page-error {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}

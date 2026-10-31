@@ -1,0 +1,11 @@
+# ADR documents
+/docs/ADR*
+
+# Project planning and specification documents
+/spec.md
+/plan.md
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example

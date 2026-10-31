@@ -1,0 +1,10 @@
+<article class="dashboard game-view">
+  <div class="dashboard-topline"><div><p class="dashboard-kicker">8-BIT WEATHER QUEST</p><h1 class="dashboard-title">WORLD STATUS</h1></div><span x-text="timezone"></span></div>
+  <section class="dashboard-clock-block" aria-label="現在日時"><p class="clock-value" x-text="currentTime"></p><p class="date-value" x-text="currentDate"></p></section>
+  <section class="weather-grid" aria-label="現在の天気">
+    <div class="weather-card nes-container"><span class="weather-card-label">FIELD WEATHER</span><strong class="weather-card-value"><span class="weather-icon" x-text="weather.icon"></span><span x-text="weather.description"></span></strong></div>
+    <div class="weather-card nes-container"><span class="weather-card-label">TEMPERATURE</span><strong class="weather-card-value" x-text="weather.temperature"></strong></div>
+    <div class="weather-card nes-container"><span class="weather-card-label">RAIN CHANCE</span><strong class="weather-card-value" x-text="weather.probability"></strong></div>
+  </section>
+  <div class="weather-status"><span x-text="weather.loading ? '通信中…' : (weather.error || (weather.updatedAt ? 'SYNC ' + weather.updatedAt : ''))" aria-live="polite"></span><button class="common-button nes-btn is-primary" type="button" @click="fetchWeather()">更新</button></div>
+</article>
