@@ -34,6 +34,10 @@
     </a>
     <div class="header-actions">
       <span class="current-page-label" x-text="currentTitle" aria-live="polite"></span>
+      <button class="fullscreen-toggle" type="button" @click="toggleFullscreen()" :disabled="!fullscreenSupported" :aria-label="isFullscreen ? '全画面表示を終了' : '全画面表示'" :title="isFullscreen ? '全画面表示を終了' : '全画面表示'">
+        <span aria-hidden="true" x-text="isFullscreen ? '⤢' : '⛶'"></span>
+      </button>
+      <span class="visually-hidden" role="status" aria-live="polite" x-text="fullscreenMessage"></span>
       <button class="menu-toggle" type="button" @click="toggleMenu()" :aria-expanded="menuOpen.toString()" aria-controls="page-menu" aria-label="ページメニューを開閉">
         <span aria-hidden="true">≡</span>
       </button>

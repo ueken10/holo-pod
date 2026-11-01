@@ -90,6 +90,9 @@
       activeTheme: 'simple',
       selectedIndex: 0,
       menuOpen: false,
+      fullscreenSupported: false,
+      isFullscreen: false,
+      fullscreenMessage: '',
       loading: true,
       errorMessage: '',
       pageContent: '',
@@ -125,6 +128,12 @@
 
       init() {
         this.themeStyle = document.getElementById('page-theme-import');
+        this.fullscreenSupported = Boolean(document.documentElement.requestFullscreen && document.fullscreenEnabled);
+        this.isFullscreen = Boolean(document.fullscreenElement);
+        this.fullscreenChangeHandler = () => {
+          this.isFullscreen = Boolean(document.fullscreenElement);
+        };
+        document.addEventListener('fullscreenchange', this.fullscreenChangeHandler);
         this.loadSettings();
         this.timezones = timezoneList(this.timezone);
         this.updateClock();
@@ -157,6 +166,7 @@
         document.removeEventListener('pinecone-start', this.routerStartHandler);
         document.removeEventListener('pinecone-end', this.routerEndHandler);
         document.removeEventListener('fetch-error', this.routerErrorHandler);
+        document.removeEventListener('fullscreenchange', this.fullscreenChangeHandler);
       },
 
       loadSettings() {
@@ -384,6 +394,25 @@
 
       retry() {
         window.location.reload();
+      },
+
+      async toggleFullscreen() {
+        if (!this.fullscreenSupported) {
+          this.fullscreenMessage = 'このブラウザーは全画面表示に対応していません。';
+          return;
+        }
+        try {
+          this.fullscreenMessage = '';
+          if (document.fullscreenElement) {
+            await document.exitFullscreen();
+          } else {
+            await document.documentElement.requestFullscreen();
+          }
+          this.isFullscreen = Boolean(document.fullscreenElement);
+        } catch (error) {
+          console.warn('Fullscreen toggle failed:', error);
+          this.fullscreenMessage = '全画面表示を開始できませんでした。ブラウザーの設定をご確認ください。';
+        }
       },
 
       toggleMenu() {
