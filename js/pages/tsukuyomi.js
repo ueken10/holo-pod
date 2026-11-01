@@ -72,7 +72,7 @@ export async function mountTsukuyomiViewer(root) {
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x111727);
     const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 30);
-    camera.position.set(0, 1.35, 2.8);
+    camera.position.set(0, 1.45, 3.5);
     renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -83,7 +83,7 @@ export async function mountTsukuyomiViewer(root) {
     scene.add(keyLight);
 
     controls = new controlsModule.OrbitControls(camera, renderer.domElement);
-    controls.target.set(0, 1, 0);
+    controls.target.set(0, 0.9, 0);
     controls.enableDamping = true;
     controls.minDistance = 1.2;
     controls.maxDistance = 7;
@@ -116,7 +116,9 @@ export async function mountTsukuyomiViewer(root) {
     vrmModule.VRMUtils.removeUnnecessaryVertices(vrm.scene);
     vrmModule.VRMUtils.removeUnnecessaryJoints(vrm.scene);
     vrm.scene.rotation.y = Math.PI;
+    vrm.scene.position.y = 0.12;
     scene.add(vrm.scene);
+    status.hidden = true;
 
     const clock = new THREE.Clock();
     const render = () => {
@@ -149,7 +151,6 @@ export async function mountTsukuyomiViewer(root) {
       const index = candidates[Math.floor(Math.random() * candidates.length)];
       const motion = VRMA_FILES[index];
       try {
-        status.textContent = `モーションを読み込み中：${motion.label}`;
         const motionUrl = new URL(`../../models/vrma/${motion.file}`, import.meta.url).href;
         const motionGltf = await assetLoader.loadAsync(motionUrl);
         if (disposed) {
@@ -169,11 +170,11 @@ export async function mountTsukuyomiViewer(root) {
         activeAction.clampWhenFinished = true;
         activeAction.play();
         currentMotionIndex = index;
-        status.textContent = `再生中：${motion.label}`;
         vrmModule.VRMUtils.deepDispose(motionGltf.scene);
       } catch (error) {
         console.error(`VRMA load failed (${motion.file}):`, error);
-        status.textContent = `モーションを読み込めませんでした：${motion.label}。次の動作を試します…`;
+        status.hidden = false;
+        status.textContent = 'アニメーションを読み込めませんでした。別の動作を試しています…';
         currentMotionIndex = index;
         window.setTimeout(() => playRandomMotion(assetLoader, animationModule), 500);
       } finally {
@@ -183,6 +184,7 @@ export async function mountTsukuyomiViewer(root) {
   } catch (error) {
     if (!disposed) {
       console.error('Tsukuyomi viewer error:', error);
+        status.hidden = false;
       status.textContent = 'モデルを読み込めませんでした。公開設定・アセットの配置・ネットワークを確認してください。';
     }
   }

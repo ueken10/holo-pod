@@ -46,7 +46,7 @@
     { path: '/game', key: 'game', title: 'ゲーム風ダッシュボード' },
     { path: '/rpg', key: 'rpg', title: 'RPG風ダッシュボード' },
     { path: '/terminal', key: 'terminal', title: 'ターミナル風ダッシュボード' },
-    { path: '/tsukuyomi', key: 'tsukuyomi', title: 'つくよみちゃん VRM' },
+    { path: '/tsukuyomi', key: 'tsukuyomi', title: '3Dモデルビューアー' },
     { path: '/settings', key: 'settings', title: '設定' }
   ];
 
@@ -277,7 +277,14 @@
       syncTheme(theme) {
         if (!this.themeStyle) return;
         const href = THEME_STYLES[theme] || '';
-        this.themeStyle.textContent = href ? `@import url("${href}") layer(framework);` : '';
+        if (!href) {
+          this.themeStyle.textContent = '';
+          return;
+        }
+        const pixelFont = theme === 'game'
+          ? '@import url("https://fonts.googleapis.com/css2?family=DotGothic16&display=swap");\n'
+          : '';
+        this.themeStyle.textContent = `${pixelFont}@import url("${href}") layer(framework);`;
       },
 
       setRoute(key) {

@@ -425,38 +425,106 @@
   }
 
   .game-view.dashboard {
-     --theme-accent: #ffce5c;
-    border: 3px solid #ffce5c;
-    border-radius: 0.5rem;
-    background: #18162c;
-    box-shadow: 0.5rem 0.5rem 0 #090a12;
+    --theme-accent: #d6def5;
+    border: 3px solid #d6def5;
+    border-radius: 0;
+    background: #000;
+    box-shadow: 0 0 0 3px #111827;
+    color: #fff;
+    font-family: "DotGothic16", "MS Gothic", monospace;
+    image-rendering: pixelated;
+  }
+
+  .page-frame[data-theme="game"] {
+    background: #000;
+    color: #fff;
+  }
+
+  .app-layout:has(.page-frame[data-theme="game"]) {
+    background: #000;
   }
 
   .game-view .clock-value {
-    color: #fff1a8;
-    font-family: ui-monospace, monospace;
-    text-shadow: 0.08em 0.08em #7d4ca0;
-    }
+    color: #fff;
+    font-family: "DotGothic16", "MS Gothic", monospace;
+    font-size: clamp(2.5rem, 11vw, 7rem);
+    letter-spacing: 0.03em;
+    text-shadow: 3px 3px 0 #353b4d;
+  }
 
-    .game-view .nes-container {
-      border-color: #f7d51d;
-      background: #12101f;
-      color: #fff;
-    }
+  .game-view .dashboard-title,
+  .game-view .dashboard-kicker,
+  .game-view .date-value,
+  .game-view .dashboard-topline > span {
+    color: #fff;
+    font-family: "DotGothic16", "MS Gothic", monospace;
+  }
 
-    .game-view button.nes-btn {
-      border: 3px solid #fff;
-      border-radius: 0;
-      background: #209cee;
-      box-shadow: inset -4px -4px #006bb3;
-      color: #fff;
-      font-family: ui-monospace, monospace;
-      font-weight: 800;
-      padding: 0.65rem 1rem;
-    }
+  .game-view .dashboard-kicker {
+    letter-spacing: 0.08em;
+  }
 
-    .game-view button.nes-btn:hover {
-      background: #108de0;
+  .game-view .weather-grid {
+    gap: 1rem;
+  }
+
+  .game-view .dq-dialog {
+    position: relative;
+    border: 3px solid #f5f6fb;
+    border-radius: 0;
+    padding: 1rem 1.1rem;
+    background: #080b16;
+    box-shadow: inset 0 0 0 2px #28344f, 0 0 0 2px #000;
+    color: #fff;
+    font-family: "DotGothic16", "MS Gothic", monospace;
+  }
+
+  .game-view .dq-dialog::before {
+    position: absolute;
+    inset: 3px;
+    border: 1px solid rgb(197 211 242 / 52%);
+    content: "";
+    pointer-events: none;
+  }
+
+  .game-view .weather-card-label {
+    color: #c4d2f2;
+    font-family: inherit;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+  }
+
+  .game-view .weather-card-value {
+    color: #fff;
+    font-family: inherit;
+    font-size: clamp(1.15rem, 3.2vw, 1.65rem);
+    font-weight: 400;
+    line-height: 1.7;
+  }
+
+  .game-view .weather-icon {
+    font-family: sans-serif;
+  }
+
+  .game-view .weather-status {
+    color: #e2e7f2;
+    font-family: "DotGothic16", "MS Gothic", monospace;
+  }
+
+  .game-view button.nes-btn {
+    min-block-size: 2.8rem;
+    border: 2px solid #fff;
+    border-radius: 0;
+    background: #111827;
+    box-shadow: inset 0 0 0 2px #424d68;
+    color: #fff;
+    font-family: "DotGothic16", "MS Gothic", monospace;
+    font-weight: 400;
+    padding: 0.55rem 1rem;
+  }
+
+  .game-view button.nes-btn:hover {
+    background: #26324b;
   }
 
   .rpg-view.dashboard {
@@ -509,12 +577,13 @@
   }
 
   .vrm-overlay {
-    position: relative;
+    position: absolute;
     z-index: 1;
-    align-self: end;
-    padding: clamp(1rem, 4vw, 2rem);
+    inset-block-start: 0;
+    inset-inline: 0;
+    padding: 0.75rem clamp(0.75rem, 2vw, 1.25rem);
     pointer-events: none;
-    background: linear-gradient(transparent, rgb(9 12 20 / 85%));
+    background: linear-gradient(rgb(9 12 20 / 68%), transparent);
   }
 
   .vrm-overlay a,
@@ -523,12 +592,17 @@
   }
 
   .vrm-status {
+    margin: 0 0 0.35rem;
     color: #e4e9ff;
+    font-size: 0.8rem;
   }
 
   .vrm-credit {
+    margin: 0.2rem 0;
     color: #c3cbe3;
-    font-size: 0.8rem;
+    font-size: clamp(0.58rem, 2.4vw, 0.72rem);
+    line-height: 1.4;
+    overflow-wrap: anywhere;
   }
 
   .router-definitions {
