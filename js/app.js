@@ -407,22 +407,30 @@
       },
 
       isEditableTarget(target) {
-        return Boolean(target && (target.isContentEditable || target.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]')));
+        return Boolean(target && (
+          target.isContentEditable ||
+          (typeof target.closest === 'function' && target.closest('input, textarea, select, [contenteditable="true"], [role="textbox"]'))
+        ));
       },
 
       handleKeydown(event) {
-        const isAppKey = event.key === 'ContextMenu' || event.code === 'ContextMenu';
-        if (isAppKey) {
+        if (event.isComposing) return;
+
+        if (event.key === '/') {
+          if (this.isEditableTarget(event.target) || event.ctrlKey || event.altKey || event.metaKey) return;
           event.preventDefault();
+          if (event.repeat) return;
           if (this.menuOpen) this.selectPage(this.selectedIndex);
           else this.toggleMenu();
           return;
         }
+
         if (this.menuOpen) {
           if (event.key === 'Escape') {
             event.preventDefault();
             this.closeMenu();
           } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+            if (this.isEditableTarget(event.target)) return;
             event.preventDefault();
             const direction = event.key === 'ArrowDown' ? 1 : -1;
             this.selectedIndex = (this.selectedIndex + direction + PAGES.length) % PAGES.length;
